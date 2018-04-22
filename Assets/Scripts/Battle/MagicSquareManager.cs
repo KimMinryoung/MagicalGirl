@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class MagicSquareManager : MonoBehaviour {
+	public GameObject magicCirclePrefab;
 
 	Dictionary<int, Square> grid;
 	public class Square{
@@ -11,21 +12,24 @@ public class MagicSquareManager : MonoBehaviour {
 		int column;
 		Vector2 pos;
 		int index;
-		GameObject gameObject;
-		MagicCircle magicCircle;
+		public GameObject gameObject;
+		MagicCircle magicCircleObject;
 		public Square(int row, int column){
 			this.row = row;
 			this.column = column;
 			pos = new Vector2((column - 2) * 120, (2 - row) * 120);
 			index = (row - 1) * 3 + column;
 			gameObject = GameObject.Find("Cell" + index.ToString());
-			magicCircle = null;
+			magicCircleObject = null;
 		}
 		public void EnableClick(bool enable){
 			gameObject.GetComponent<Button> ().interactable = enable;
 		}
+		public void SetMagicCircle(MagicCircle magicCircleObject){
+			this.magicCircleObject = magicCircleObject;
+		}
 		public bool IsEmpty(){
-			return magicCircle == null;
+			return magicCircleObject == null;
 		}
 	}
 
@@ -39,11 +43,6 @@ public class MagicSquareManager : MonoBehaviour {
 		}
 	}
 
-	// Use this for initialization
-	void Start () {
-		EnableEmptySqauresClick ();
-	}
-
 	public void DisableAllSquaresClick(){
 		foreach (var kv in grid) {
 			kv.Value.EnableClick (false);
@@ -55,7 +54,12 @@ public class MagicSquareManager : MonoBehaviour {
 		}
 	}
 	public void OnClickSquare(int index){
-		DisableAllSquaresClick ();
+		GameObject magicCircleObject = Instantiate(magicCirclePrefab) as GameObject;
+		magicCircleObject.transform.SetParent(grid[index].gameObject.transform, false);
+		MagicCircle magicCircle = magicCircleObject.GetComponent<MagicCircle>();
+		grid[index].SetMagicCircle(magicCircle);
+		magicCircle.SetMagicCircle("불꽃 씨앗", "Fire");
+		EnableEmptySqauresClick();
 	}
 	
 	// Update is called once per frame
