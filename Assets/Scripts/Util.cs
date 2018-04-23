@@ -76,4 +76,35 @@ public class Util {
 		button.GetComponent<Button>().onClick.AddListener(triggeredAction);
 		return button;
 	}
+
+	public static int GetSquareIndex(int row, int column){
+		return (row - 1) * 3 + column;
+	}
+	public static List<int> GetLineIndexes(LineType type, int num){
+		List<int> indexes = new List<int>();
+		if(type == LineType.Row){
+			for(int column = 1; column <= 3; column ++){
+				indexes.Add(GetSquareIndex(num, column));
+			}
+		}else if(type == LineType.Column){
+			for(int row = 1; row <= 3; row ++){
+				indexes.Add(GetSquareIndex(row, num));
+			}
+		}else{
+			if(num == 1){
+				for(int row = 1; row <= 3; row ++){
+					indexes.Add(GetSquareIndex(row, row));
+				}
+			}else{
+				for(int row = 1; row <= 3; row ++){
+					indexes.Add(GetSquareIndex(row, 4 - row));
+				}
+			}
+		}
+		return indexes;
+	}
 }
+
+public enum Stat {Power, Defense, Agile}
+public enum Side {None, Player, Opponent}
+public enum LineType{Row, Column, Diagonal}

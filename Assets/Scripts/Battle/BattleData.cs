@@ -4,8 +4,10 @@ using System;
 //using UnityEngine;
 
 public static class BattleData {
-	static Unit player;
-	static Unit opponent;
+	public static Unit player;
+	public static Unit opponent;
+	public static BattleManager BM;
+	public static int turnNumber;
 }
 
 public class Unit{
@@ -35,5 +37,3 @@ public class Unit{
 		currentHealth = Math.Min (maxHealth, currentHealth + finalHealthChange);
 	}
 }
-	
-public enum Stat {Power, Defense, Agile}
