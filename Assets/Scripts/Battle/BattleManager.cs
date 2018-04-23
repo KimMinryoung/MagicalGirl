@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
 
 public class BattleManager : MonoBehaviour {
@@ -8,6 +9,10 @@ public class BattleManager : MonoBehaviour {
 	
 	void Awake(){
 		BattleData.BM = this;
+		BattleData.player = new Unit("Scarlet", "스칼렛", 3,3,3);
+		BattleData.player.healthText = GameObject.Find("Player").transform.Find("Health").GetComponentInChildren<Text>();
+		BattleData.opponent = new Unit("Iris", "아이리스", 10,1,1);
+		BattleData.opponent.healthText = GameObject.Find("Opponent").transform.Find("Health").GetComponentInChildren<Text>();
 	}
 	void Start(){
 		BattleData.turnNumber = 1;
@@ -17,10 +22,18 @@ public class BattleManager : MonoBehaviour {
 
 	public void OnDecideSetPosition(int index){
 		int AIposIndex = AIDecide();
-		if(index != AIposIndex){
+		bool playerActFirst = (Random.Range(0, BattleData.player.GetStat(Stat.Agile) 
+		+ BattleData.opponent.GetStat(Stat.Agile)) < BattleData.player.GetStat(Stat.Agile));
+		if(index == AIposIndex){
+			if(playerActFirst){
+				MSM.InstallMagicCircle(Side.Player, index, "Fire");
+			}else{
+				MSM.InstallMagicCircle(Side.Opponent, AIposIndex, "Metal");
+			}
+		}else{
 			MSM.InstallMagicCircle(Side.Player, index, "Fire");
+			MSM.InstallMagicCircle(Side.Opponent, AIposIndex, "Metal");
 		}
-		MSM.InstallMagicCircle(Side.Opponent, AIposIndex, "Metal");
 		ThreeMatch();
 		BattleData.turnNumber ++;
 	}
@@ -71,13 +84,13 @@ public class BattleManager : MonoBehaviour {
 			}
 		}
 		foreach(int row in matchedRows){
-			MSM.DestroyLine(LineType.Row, row);
+			MSM.ActivateLine(LineType.Row, row);
 		}
 		foreach(int column in matchedColumns){
-			MSM.DestroyLine(LineType.Column, column);
+			MSM.ActivateLine(LineType.Column, column);
 		}
 		foreach(int diag in matchedDiagonals){
-			MSM.DestroyLine(LineType.Diagonal, diag);
+			MSM.ActivateLine(LineType.Diagonal, diag);
 		}
 	}
 }

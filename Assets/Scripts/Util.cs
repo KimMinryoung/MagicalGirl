@@ -103,6 +103,24 @@ public class Util {
 		}
 		return indexes;
 	}
+	public static Unit GetSideUnit(Side side){
+		if(side == Side.Player){
+			return BattleData.player;
+		}else if(side == Side.Opponent){
+			return BattleData.opponent;
+		}else{
+			return null;
+		}
+	}
+	public static Unit GetEnemySideUnit(Side side){
+		if(side == Side.Player){
+			return BattleData.opponent;
+		}else if(side == Side.Opponent){
+			return BattleData.player;
+		}else{
+			return null;
+		}
+	}
 }
 
 public enum Stat {Power, Defense, Agile}

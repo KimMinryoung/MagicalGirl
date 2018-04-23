@@ -43,9 +43,9 @@ public class MagicSquareManager : MonoBehaviour {
 		magicCircle.SetMagicCircle(side, spriteName, spriteName);
 	}
 
-	public void DestroyLine(LineType type, int num){
+	public void ActivateLine(LineType type, int num){
 		List<int> indexes = Util.GetLineIndexes(type, num);
-		indexes.All(index => {grid[index].DestroyMagicCircle(); return true;});
+		indexes.All(index => {grid[index].ActivateMagicCircle(); return true;});
 	}
 	
 	// Update is called once per frame
@@ -75,9 +75,9 @@ public class MagicSquareManager : MonoBehaviour {
 		public void SetMagicCircle(MagicCircle magicCircle){
 			this.magicCircle = magicCircle;
 		}
-		public void DestroyMagicCircle(){
+		public void ActivateMagicCircle(){
 			if(!IsEmpty()){
-				magicCircle.GetDestroyed();
+				magicCircle.GetActivated();
 				magicCircle = null;
 			}
 		}

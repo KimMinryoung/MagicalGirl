@@ -19,6 +19,10 @@ public class MagicCircle : MonoBehaviour {
 		image.sprite = Resources.Load<Sprite>("Battle/MagicCircle/"+spriteName);
 	}
 
+	public void GetActivated(){
+		Util.GetEnemySideUnit(side).GetDamageOrHeal(-Util.GetSideUnit(side).GetStat(Stat.Power));
+		GetDestroyed();
+	}
 	public void GetDestroyed(){
 		StartCoroutine(FadeOut(1f));
 	}
